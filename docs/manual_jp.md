@@ -288,6 +288,13 @@ class CP_EXPORT RandomizedQueue
 * [streamCopy](stream_jp.md "#streamCopy")
 * [streamConvertTo8U](stream_jp.md "#streamConvertTo8U")
 
+## string_cp.hpp
+stringクラスの拡張
+
+* [string_split](string_cp_jp.md "#string_split")
+* [string_remove](string_cp_jp.md "#string_remove")
+* [string_format_with_commas](string_cp_jp.md "#string_format_with_commas")
+
 ## [Todo] tiling.hpp
 
 タイリング用．いろいろデバッグ途中
@@ -341,27 +348,10 @@ class CP_EXPORT DestinationTimePrediction
 パラメータの更新確認クラス．
 * [class UpdateCheck](core/UpdateCheck_jp.md "#class UpdateCheck")
 
-## [Todo] vecotr.hpp
-vector配列をバイナリデータとして保存する関数群
-```cpp
-CP_EXPORT void writevector(std::vector<char>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<uchar>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<short>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<ushort>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<int>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<uint>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<float>& buf, const std::string name);
-CP_EXPORT void writevector(std::vector<double>& buf, const std::string name);
-
-CP_EXPORT void readvector(std::vector<char>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<uchar>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<short>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<ushort>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<int>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<uint>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<float>& buf, const std::string name);
-CP_EXPORT void readvector(std::vector<double>& buf, const std::string name);
-```
+## vectorio.hpp
+std::vectorの配列の中身をバイナリとしてダンプする関数．
+* [writevector](core/vectorio_jp.md "#writevector")
+* [readvector](core/vectorio_jp.md "#readvector")
 
 ## [Todo] video.hpp
 動画を表示するだけ．
