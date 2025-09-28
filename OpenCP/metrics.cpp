@@ -1503,8 +1503,16 @@ namespace cp
 		mat.at<float>(2, 2) = +0.34f;
 		mat.at<float>(2, 1) = -0.60f;
 		mat.at<float>(2, 0) = +0.17f;
-		Mat sf = cp::convert(src, CV_32F);
-		transform(sf, sf, mat);
+		Mat sf;
+		if (src.depth() == CV_32F)
+		{
+			transform(src, sf, mat);
+		}
+		else
+		{
+			src.convertTo(sf, CV_32F);
+			transform(sf, sf, mat);
+		}
 		split(sf, vdst);
 	}
 
@@ -1516,7 +1524,7 @@ namespace cp
 		float* t = tmp.ptr<float>();
 		for (int i = 0; i < map.size().area(); i++)
 		{
-			float v = sqrt(s[i]);
+			float v = sqrt(max(0.f, s[i]));
 			v = sqrt(v);
 			t[i] = v;
 			ret += v;
@@ -1530,7 +1538,7 @@ namespace cp
 		}
 
 		ret = ret / map.size().area();
-		ret = sqrt(ret);
+		ret = sqrt(max(0.0, ret));
 		ret = sqrt(ret);
 		return ret;
 	}
@@ -1548,6 +1556,7 @@ namespace cp
 			const int length = max(ref.size().width, ref.size().height);
 			if (length > 256)
 			{
+				/*
 				if (ref.size().width > ref.size().height)
 				{
 					const int h = ref.size().height * 256.0 / double(ref.size().width);
@@ -1559,7 +1568,9 @@ namespace cp
 					const int w = ref.size().width * 256.0 / double(ref.size().height);
 					resize(ref, R, Size(w, 256), 0.0, 0.0, INTER_AREA);
 					resize(deg, D, Size(w, 256), 0.0, 0.0, INTER_AREA);
-				}
+				}*/
+				resize(ref, R, Size(), 0.5, 0.5, INTER_AREA);
+				resize(deg, D, Size(), 0.5, 0.5, INTER_AREA);
 			}
 			else
 			{
@@ -1608,16 +1619,16 @@ namespace cp
 			float ret = numnumerator / denominator;
 			numnumerator = 2.f * sqrt(dl[i] * al[i]) + C2;
 			denominator = al[i] + dl[i] + C2;
-			ret += numnumerator / denominator;
+			ret += numnumerator / max(denominator, FLT_EPSILON);
 			numnumerator = 2.f * sqrt(rl[i] * al[i]) + C2;
 			denominator = al[i] + rl[i] + C2;
-			ret -= numnumerator / denominator;
+			ret -= numnumerator / max(denominator, FLT_EPSILON);
 
 			//HM
 			ret *= alpha;
 			numnumerator = 2.f * (rh[i] * dh[i] + rm[i] * dm[i]) + C3;
 			denominator = rh[i] * rh[i] + dh[i] * dh[i] + rm[i] * rm[i] + dm[i] * dm[i] + C3;
-			ret += (1.f - alpha) * numnumerator / denominator;
+			ret += (1.f - alpha) * numnumerator / max(denominator, FLT_EPSILON);
 			dst[i] = ret;
 		}
 
